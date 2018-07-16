@@ -1,0 +1,16 @@
+{
+  "name": "udp-device-sim",
+  "version": "1.0.0",
+  "description": "",
+  "main": "device-sim.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dgram": "^1.0.1",
+    "dotenv": "^6.0.0",
+    "readline-sync": "^1.4.9"
+  }
+}
