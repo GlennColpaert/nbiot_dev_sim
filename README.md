@@ -14,7 +14,6 @@ The code provided in this sample is not production ready and was built for demon
 # Running the sample
 
 ```
-bower install bootstrap (you can ignore that)
 npm install
 npm start
 
