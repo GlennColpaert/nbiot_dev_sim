@@ -20,13 +20,15 @@ const start = () => {
             server.on('message', function (message, remote) {
                 console.log(`${remote.address}:${remote.port} - ${message}`);
             });
+            
             var interval = setInterval(function () {
                 sendData();
             }, process.env.TIMEOUT);
             break;
         case 'coap':
-            server = coap.createServer();
+            server = coap.createServer({type: ipv});
             server.on('request', function (req, res) {
+                console.log(req.rsinfo.address)
                 console.log('coap request received: ' + req.url);
                 let nodeTime = new Date().toISOString();
                 var value = (Math.random() * (16 - 15) + 15).toFixed(4);
@@ -36,22 +38,22 @@ const start = () => {
             });
             
             server.listen(function () {
-                console.log('coap server started on port 5683')
+                
+                console.log('coap server started on port 5683');
             });
             break;
         default:
             break;
     }
+}
    
 const sendData = () => {
-    let payload = JSON.stringify({
-        temperature: Math.random() * (14 - 12) + 12
-    });
+    let payload = JSON.stringify({temperature: Math.random() * (14 - 12) + 12});
 
     client.send(payload, 0, payload.length, process.env.D2C_PORT, process.env.GW_HOST, function (err, bytes) {
         if (err) throw err;
         console.log(`${JSON.stringify(payload)} sent to ${process.env.GW_HOST}:${process.env.D2C_PORT}`);
-    });
+    })
 }
 
 start();
