@@ -14,7 +14,7 @@ const start = () => {
             client.bind(process.env.D2C_PORT); // send telemetry on 41234
             server.bind(process.env.C2D_PORT); // 
             server.on('listening', function () {
-                var address = raw_server.address();
+                var address = server.address();
                 console.log(`UDP DEVICE listening on ${address.address}: ${address.port}`);
             });
             server.on('message', function (message, remote) {
@@ -22,13 +22,13 @@ const start = () => {
             });
             
             var interval = setInterval(function () {
-                sendData();
+                //sendData();
             }, process.env.TIMEOUT);
             break;
         case 'coap':
             server = coap.createServer({type: ipv});
             server.on('request', function (req, res) {
-                console.log(req.rsinfo.address)
+                console.log(req.rsinfo)
                 console.log('coap request received: ' + req.url);
                 let nodeTime = new Date().toISOString();
                 var value = (Math.random() * (16 - 15) + 15).toFixed(4);
@@ -37,9 +37,8 @@ const start = () => {
                 res.end(value);
             });
             
-            server.listen(function () {
-                
-                console.log('coap server started on port 5683');
+            server.listen( () => {
+                console.log('coap server started on port 61000');
             });
             break;
         default:
