@@ -20,24 +20,26 @@ const start = () => {
             server.on('message', function (message, remote) {
                 console.log(`${remote.address}:${remote.port} - ${message}`);
             });
-            
+
             var interval = setInterval(function () {
                 //sendData();
             }, process.env.TIMEOUT);
             break;
         case 'coap':
-            server = coap.createServer({type: ipv});
-            server.on('request', function (req, res) {
-                console.log(req.rsinfo)
-                console.log('coap request received: ' + req.url);
-                let nodeTime = new Date().toISOString();
-                var value = (Math.random() * (16 - 15) + 15).toFixed(4);
-                console.log(`time stamp: ${nodeTime}\nvalue: ${value}`);
-            
-                res.end(value);
+            server = coap.createServer({
+                type: ipv
             });
-            
-            server.listen( () => {
+            server.on('request', function (req, res) {
+                console.log(req)
+                console.log('coap request received: ' + req.url);
+                //let nodeTime = new Date().toISOString();
+                //var value = (Math.random() * (16 - 15) + 15).toFixed(4);
+                //console.log(`time stamp: ${nodeTime}\nvalue: ${value}`);
+
+                res.end('ok');
+            });
+
+            server.listen(() => {
                 console.log('coap server started on port 61000');
             });
             break;
@@ -45,9 +47,11 @@ const start = () => {
             break;
     }
 }
-   
+
 const sendData = () => {
-    let payload = JSON.stringify({temperature: Math.random() * (14 - 12) + 12});
+    let payload = JSON.stringify({
+        temperature: Math.random() * (14 - 12) + 12
+    });
 
     client.send(payload, 0, payload.length, process.env.D2C_PORT, process.env.GW_HOST, function (err, bytes) {
         if (err) throw err;

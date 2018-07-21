@@ -1,8 +1,8 @@
-# nbiot-gw
+# nbiot-dev_sim
 
 Simple command line app to:
 * send UDP messages to an UDP server
-* receive UDP messages from another UDP end point
+* receive UDP/CoAP messages from a server
 
 # Disclaimer
 
