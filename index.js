@@ -40,7 +40,7 @@ const start = () => {
             });
 
             server.listen(() => {
-                console.log('coap server started on port 61000');
+                console.log('coap server started on port 5683');
             });
             break;
         default:
