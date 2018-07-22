@@ -2,7 +2,7 @@
 require('dotenv').config();
 var readline = require('readline-sync');
 const dgram = require('dgram');
-const parse = require('../').parse
+const parse = require('coap-packet').parse
 const ipv = 'udp' + process.env.IPV;
 var server, client;
 
