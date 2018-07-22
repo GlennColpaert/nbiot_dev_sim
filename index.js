@@ -26,6 +26,7 @@ const start = () => {
             }, process.env.TIMEOUT);
             break;
         case 'coap':
+        console.log('spawning coap device')
             server = coap.createServer({
                 type: ipv
             });
