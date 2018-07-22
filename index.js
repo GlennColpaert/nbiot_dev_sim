@@ -2,7 +2,7 @@
 require('dotenv').config();
 var readline = require('readline-sync');
 const dgram = require('dgram');
-const coap = require('coap');
+const parse = require('../').parse
 const ipv = 'udp' + process.env.IPV;
 var server, client;
 
@@ -26,7 +26,18 @@ const start = () => {
             }, process.env.TIMEOUT);
             break;
         case 'coap':
-        console.log('spawning coap device')
+        server = dgram.createSocket(ipv);
+        server.bind(5683); // 
+        server.on('listening', function () {
+            var address = server.address();
+            console.log(`COAP DEVICE listening on ${address.address}: ${address.port}`);
+        });
+        server.on('message', function (message, remote) {
+            console.log(`${remote.address}:${remote.port} - ${message}`);
+            console.log(parse(data).payload.toString())
+
+        });
+        /*
             server = coap.createServer({
                 type: ipv
             });
@@ -43,6 +54,7 @@ const start = () => {
             server.listen(() => {
                 console.log('coap server started on port 5683');
             });
+            */
             break;
         default:
             break;

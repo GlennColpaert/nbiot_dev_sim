@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "coap": "^0.22.0",
+    "coap-packet": "^0.1.14",
     "dgram": "^1.0.1",
     "dotenv": "^6.0.0",
     "readline-sync": "^1.4.9"
