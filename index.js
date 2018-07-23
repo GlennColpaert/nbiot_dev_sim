@@ -2,7 +2,6 @@
 require('dotenv').config();
 var readline = require('readline-sync');
 const dgram = require('dgram');
-const parse = require('coap-packet').parse
 const ipv = 'udp' + process.env.IPV;
 var server, client;
 
@@ -34,8 +33,9 @@ const start = () => {
         });
         server.on('message', function (message, remote) {
             console.log(`${remote.address}:${remote.port} - ${message}`);
-            console.log(parse(data).payload.toString())
-
+            console.log('coap request received');
+            console.log(`Parsed: ${JSON.stringify(parse(message))}`);
+            res.end('ok');
         });
         /*
             server = coap.createServer({
