@@ -27,6 +27,7 @@ const start = () => {
             }, process.env.TIMEOUT);
             break;
         case 'coap':
+        /*
         server = dgram.createSocket(ipv);
         server.bind(5683); // 
         server.on('listening', function () {
@@ -38,7 +39,7 @@ const start = () => {
             console.log(parse(data)));
             server.close();
         });
-        /*
+        */
             server = coap.createServer({
                 type: ipv
             });
@@ -55,7 +56,7 @@ const start = () => {
             server.listen(() => {
                 console.log('coap server started on port 5683');
             });
-            */
+            
             break;
         default:
             break;
