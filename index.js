@@ -34,8 +34,8 @@ const start = () => {
             console.log(`COAP DEVICE listening on ${address.address}: ${address.port}`);
         });
         server.on('message', function (data, remote) {
-            console.log(`${remote.address}:${remote.port} - ${data}`);
-            console.log(parse(data).payload.toString())
+            console.log(`${remote.address}:${remote.port}`);
+            console.log(parse(data)));
             server.close();
         });
         /*
