@@ -34,7 +34,7 @@ const start = () => {
         server.on('message', function (message, remote) {
             console.log(`${remote.address}:${remote.port} - ${message}`);
             console.log('coap request received');
-            console.log(`Parsed: ${JSON.stringify(parse(message))}`);
+            console.log(`Parsed: ${JSON.parse(message.toString())}`);
             res.end('ok');
         });
         /*
