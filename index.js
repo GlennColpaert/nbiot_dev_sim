@@ -2,7 +2,7 @@
 require('dotenv').config();
 var readline = require('readline-sync');
 const dgram = require('dgram');
-const parse    = require('../').parse;
+const parse    = require('coap-packet/').parse;
 
 const ipv = 'udp' + process.env.IPV;
 var server, client;
@@ -34,6 +34,7 @@ const start = () => {
             console.log(`COAP DEVICE listening on ${address.address}: ${address.port}`);
         });
         server.on('message', function (data, remote) {
+            console.log(`${remote.address}:${remote.port} - ${data}`);
             console.log(parse(data).payload.toString())
             server.close();
         });
