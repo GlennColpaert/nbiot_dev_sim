@@ -33,19 +33,25 @@ const start = () => {
 			});
 			server.on('request', function(req, res) {
 				console.log(req);
-				if (req.headers['Observe'] !== 0) return res.end(new Date().toISOString() + '\n');
+                if (req.headers['Observe'] !== 0) 
+                {
+                    console.log('NOT OBSERVE')
+                    return res.end(new Date().toISOString() + '\n');
+                }
 				else {
 					console.log('OBSERVE');
 
-					var interval = setInterval(function() {
+					/*var interval = setInterval(function() {
 						res.write(new Date().toISOString() + '\n');
 					}, 1000);
 
 					res.on('finish', function(err) {
 						clearInterval(interval);
-					});
+                    });*/
+                    sendData();
+                    res.end('ok');
+
 				}
-				res.end('ok');
 			});
 
 			server.listen(() => {
@@ -61,7 +67,9 @@ const start = () => {
 const sendData = () => {
 	let payload = JSON.stringify({
 		temperature: Math.random() * (14 - 12) + 12,
-	});
+    });
+    
+    console.log(payload)
 
 	client.send(payload, 0, payload.length, process.env.D2C_PORT, process.env.GW_HOST, function(err, bytes) {
 		if (err) throw err;
