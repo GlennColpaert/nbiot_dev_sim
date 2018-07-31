@@ -57,6 +57,7 @@ const streamData = () => {
 	});
 
 	var interval = setInterval(function() {
+		console.log('tick')
 		if (transport === 'raw') {
 			client.send(payload, 0, payload.length, process.env.D2C_PORT, process.env.GW_HOST, function(err, bytes) {
 				if (err) throw err;
