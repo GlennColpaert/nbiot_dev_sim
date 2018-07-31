@@ -64,7 +64,7 @@ const streamData = () => {
 				console.log(`${JSON.stringify(payload)} sent to ${process.env.GW_HOST}:${process.env.D2C_PORT}`);
 			});
 		} else {
-			res.write(payload + '\n')
+			observe_response.write(payload + '\n')
 		}
 	}, process.env.TIMEOUT);
 };
