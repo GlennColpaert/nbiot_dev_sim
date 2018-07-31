@@ -6,7 +6,8 @@ const coap = require('coap');
 const parse = require('coap-packet/').parse;
 
 const ipv = 'udp' + process.env.IPV;
-var server, client, transport = 'raw';
+var server, client;
+var transport = 'raw';
 var observe_response;
 
 const start = () => {
@@ -32,7 +33,7 @@ const start = () => {
 			});
 			server.on('request', function(req, res) {
 				console.log(req.headers);
-				if (req.headers['Observe'] !== 0) {
+				if (req.headers['Observe'] === 0) {
 					console.log('get the value of: ' + req.url);
 					observe_response = res;
 					streamData();
@@ -41,13 +42,12 @@ const start = () => {
 					res.end('ok');
 				}
 			});
-
 			server.listen(() => {
 				console.log('coap server started on port 5683');
 			});
-
 			break;
 		default:
+		console.log('start with command line option raw or coap');
 			break;
 	}
 };
@@ -67,7 +67,6 @@ const streamData = () => {
 			res.write(payload + '\n')
 		}
 	}, process.env.TIMEOUT);
-	
 };
 
 start();
