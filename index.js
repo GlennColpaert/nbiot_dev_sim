@@ -34,7 +34,6 @@ const start = () => {
 			server.on('request', function(req, res) {
 				console.log(req.headers);
 				if (req.headers['Observe'] === 0) {
-					console.log('get the value of: ' + req.url);
 					observe_response = res;
 					streamData();
 				} else {
