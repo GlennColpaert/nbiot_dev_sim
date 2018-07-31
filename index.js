@@ -6,10 +6,12 @@ const coap = require('coap');
 const parse = require('coap-packet/').parse;
 
 const ipv = 'udp' + process.env.IPV;
-var server, client;
+var server, client, transport = 'raw';
+var observe_response;
 
 const start = () => {
-	switch (process.argv[2]) {
+	transport = process.argv[2];
+	switch (transport) {
 		case 'raw':
 			client = dgram.createSocket(ipv);
 			server = dgram.createSocket(ipv);
@@ -22,10 +24,7 @@ const start = () => {
 			server.on('message', function(message, remote) {
 				console.log(`${remote.address}:${remote.port} - ${message}`);
 			});
-
-			var interval = setInterval(function() {
-				//sendData();
-			}, process.env.TIMEOUT);
+			streamData();
 			break;
 		case 'coap':
 			server = coap.createServer({
@@ -35,18 +34,10 @@ const start = () => {
 				console.log(req.headers);
 				if (req.headers['Observe'] !== 0) {
 					console.log('get the value of: ' + req.url);
-					return res.end(new Date().toISOString() + '\n');
+					observe_response = res;
+					streamData();
 				} else {
-					console.log('start telemetry');
-
-					/*var interval = setInterval(function() {
-						res.write(new Date().toISOString() + '\n');
-					}, 1000);
-
-					res.on('finish', function(err) {
-						clearInterval(interval);
-                    });*/
-					sendData();
+					//sendData();
 					res.end('ok');
 				}
 			});
@@ -61,17 +52,22 @@ const start = () => {
 	}
 };
 
-const sendData = () => {
+const streamData = () => {
 	let payload = JSON.stringify({
 		temperature: Math.random() * (14 - 12) + 12,
 	});
 
-	console.log(payload);
-
-	client.send(payload, 0, payload.length, process.env.D2C_PORT, process.env.GW_HOST, function(err, bytes) {
-		if (err) throw err;
-		console.log(`${JSON.stringify(payload)} sent to ${process.env.GW_HOST}:${process.env.D2C_PORT}`);
-	});
+	var interval = setInterval(function() {
+		if (transport === 'raw') {
+			client.send(payload, 0, payload.length, process.env.D2C_PORT, process.env.GW_HOST, function(err, bytes) {
+				if (err) throw err;
+				console.log(`${JSON.stringify(payload)} sent to ${process.env.GW_HOST}:${process.env.D2C_PORT}`);
+			});
+		} else {
+			res.write(payload + '\n')
+		}
+	}, process.env.TIMEOUT);
+	
 };
 
 start();
